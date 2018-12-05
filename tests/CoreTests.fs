@@ -164,6 +164,13 @@ describe "Core tests" <| fun _ ->
         opt.docs <- !!data
       )
       let! results = db.bulkDocs options
+
+      results
+      |> Seq.iter (fun result ->
+          match result with
+          | U2.Case1 response -> printfn "--- result: %A" result
+          | U2.Case2 error -> printfn "--- error: %A" error)
+
       return results.Count = data.Length
     }
       |> Promise.map(fun actual -> equal true actual)
